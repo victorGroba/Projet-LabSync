@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Uso Meios de Cultura</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #ecf0f1;
+            display: flex;
+            min-height: 100vh;
+            transition: background-color 0.2s ease;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #34495e;
+            color: white;
+            position: fixed;
+            height: 100%;
+            padding-top: 20px;
+            box-shadow: 4px 0px 15px rgba(0, 0, 0, 0.1);
+            transition: width 0.2s ease, visibility 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            color: #ecf0f1;
+            font-size: 28px;
+            font-weight: 500;
+            margin-bottom: 40px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #ecf0f1;
+            font-size: 18px;
+            margin-left: 15px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            transition: padding-left 0.2s ease, background-color 0.2s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #1abc9c;
+            padding-left: 25px;
+            border-radius: 5px;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 40px;
+            width: 100%;
+            transition: margin-left 0.2s ease;
+        }
+
+        .content .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 950px;
+            margin: auto;
+            transition: all 0.2s ease;
+        }
+
+        .logo img {
+            width: 180px;
+            margin-bottom: 30px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            transition: width 0.2s ease;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            background-color: #1abc9c;
+            border: none;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            background-color: #16a085;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 0;
+                position: fixed;
+                height: 100%;
+                overflow: hidden;
+                transition: width 0.3s ease;
+            }
+
+            .sidebar.active {
+                width: 250px;
+                overflow: visible;
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 20px;
+                transition: margin-left 0.3s ease;
+            }
+
+            .toggle-sidebar {
+                display: block;
+                cursor: pointer;
+                font-size: 30px;
+                color: #2c3e50;
+                margin-left: 10px;
+                margin-top: 10px;
+            }
+
+            .sidebar.active + .content {
+                margin-left: 250px;
+            }
+
+            .content .container {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>LabSync</h2>
+        <ul>
+            <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{{ url_for('projeto1.formulario') }}"><i class="fas fa-vial"></i> Registro de pH</a></li>
+            <li><a href="{{ url_for('projeto2.index') }}"><i class="fas fa-chart-line"></i> Relatório de Produção</a></li>
+            <li><a href="{{ url_for('projeto3.form') }}"><i class="fas fa-box"></i> Registro de Pedidos</a></li>
+        </ul>
+        <div class="footer-sidebar text-center">
+            <p>Desenvolvido por</p>
+            <p><b>José Victor</b></p>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="toggle-sidebar">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="container">
+            <div class="text-center logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo da Empresa" width="180">
+            </div>
+            <h1 class="text-center mb-4">Relatório de Uso Meios de Cultura</h1>
+            <h6 class="text-center mb-4">Esse formulário indica a quantidade de frascos utilizados na produção anual.</h6>
+
+            <form method="get" action="{{ url_for('projeto2.index') }}">
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="ano">Ano</label>
+                        <select name="ano" class="form-control" id="ano">
+                            <option value="">Selecione o Ano</option>
+                            {% for ano in anos %}
+                                <option value="{{ ano }}">{{ ano }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="meio">Meio de Cultura</label>
+                        <input type="text" name="meio" class="form-control" id="meio" placeholder="Filtrar por meio">
+                    </div>
+
+                    <div class="form-group col-md-3 align-self-end">
+                        <button type="submit" class="btn btn-primary btn-block">Filtrar</button>
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <h5>Selecione as colunas para exibir:</h5>
+                    <div class="row">
+                        {% for coluna in colunas %}
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="colunas" value="{{ coluna }}" id="{{ coluna }}">
+                                    <label class="form-check-label checkbox-label" for="{{ coluna }}">
+                                        {{ coluna }}
+                                    </label>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Atualizar Exibição</button>
+            </form>
+
+            <div>
+                {% for tabela in tabelas %}
+                    <div class="table-responsive">
+                        {{ tabela | safe }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const toggleButton = document.querySelector('.toggle-sidebar');
+        const sidebar = document.querySelector('.sidebar');
+        const content = document.querySelector('.content');
+
+        toggleButton.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            content.classList.toggle('sidebar-active');
+        });
+    </script>
+
+</body>

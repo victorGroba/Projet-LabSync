@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Pedidos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #ecf0f1;
+            display: flex;
+            min-height: 100vh;
+            transition: background-color 0.2s ease;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #34495e;
+            color: white;
+            position: fixed;
+            height: 100%;
+            padding-top: 20px;
+            box-shadow: 4px 0px 15px rgba(0, 0, 0, 0.1);
+            transition: width 0.2s ease, visibility 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            color: #ecf0f1;
+            font-size: 28px;
+            font-weight: 500;
+            margin-bottom: 40px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #ecf0f1;
+            font-size: 18px;
+            margin-left: 15px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            transition: padding-left 0.2s ease, background-color 0.2s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #1abc9c;
+            padding-left: 25px;
+            border-radius: 5px;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 40px;
+            width: 100%;
+            transition: margin-left 0.2s ease;
+        }
+
+        .content .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 950px;
+            margin: auto;
+            transition: all 0.2s ease;
+        }
+
+        .logo img {
+            width: 180px;
+            margin-bottom: 30px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            transition: width 0.2s ease;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            background-color: #1abc9c;
+            border: none;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            background-color: #16a085;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 0;
+                position: fixed;
+                height: 100%;
+                overflow: hidden;
+                transition: width 0.3s ease;
+            }
+
+            .sidebar.active {
+                width: 250px;
+                overflow: visible;
+            }
+
+            .content {
+                margin-left: 0;
+                padding:  20px;
+                transition: margin-left 0.3s ease;
+            }
+
+            .toggle-sidebar {
+                display: block;
+                cursor: pointer;
+                font-size: 30px;
+                color: #2c3e50;
+                margin-left: 10px;
+                margin-top: 10px;
+            }
+
+            .sidebar.active + .content {
+                margin-left: 250px;
+            }
+
+            .content .container {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>LabSync</h2>
+        <ul>
+            <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{{ url_for('projeto1.formulario') }}"><i class="fas fa-vial"></i> Registro de pH</a></li>
+            <li><a href="{{ url_for('projeto2.index') }}"><i class="fas fa-chart-line"></i> Relatório de Produção</a></li>
+            <li><a href="{{ url_for('projeto3.form') }}"><i class="fas fa-box"></i> Registro de Pedidos</a></li>
+        </ul>
+        <div class="footer-sidebar text-center">
+            <p>Desenvolvido por</p>
+            <p><b>José Victor</b></p>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="toggle-sidebar">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="container">
+            <div class="text-center logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo da Empresa" width="180">
+            </div>
+            <h1 class="text-center mb-4">Registro de Pedidos</h1>
+            <h6 class="text-center mb-4">Preencha os dados abaixo para registrar o que você Utilizou.</h6>
+
+            <form id="form-registrar" method="POST">
+                <div class="form-group">
+                    <label for="nome">Pessoa Solicitante:</label>
+                    <input type="text" class="form-control" id="nome" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="material">Material Utilizado:</label>
+                    <input type="text" class="form-control" id="material" name="material" list="itensEstoque" required>
+                    <datalist id="itensEstoque">
+                        <!-- Opções de autocomplete serão inseridas dinamicamente pelo JavaScript -->
+                    </datalist>
+                </div>
+                <div class="form-group">
+                    <label for="quantidade">Quantidade:</label>
+                    <input type="number" class="form-control" id="quantidade" name="quantidade" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Registrar</button>
+                <input type="hidden" id="ultimo-nome" name="ultimo_nome" value="">
+            </form>
+
+            <form id="form-limpar" action="{{ url_for('projeto3.limpar_registros_exibidos') }}" method="POST">
+                <button type="submit" class="btn btn-danger mt-3">Limpar Resumo</button>
+            </form>
+
+            <div id="lista-registros" class="mt-4">
+                {% if registros %}
+                    {% for registro in registros %}
+                    <div class="alert alert-success mt-3" role="alert">
+                        <strong>Registro realizado:</strong><br>
+                        <span>Pessoa Solicitante: {{ registro.nome }}</span><br>
+                        <span>Material Utilizado: {{ registro.material }}</span><br>
+                        <span>Quantidade: {{ registro.quantidade }}</span><br>
+                        <span>Data e Hora: {{ registro.data_hora }}</span><br>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-info mt-3" role="alert">
+                        Nenhum registro disponível.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        function carregarItensEstoque() {
+            fetch('/api/itens_estoque')
+                .then(response => response.json())
+                .then(data => {
+                    const inputMaterial = document.getElementById('material');
+                    inputMaterial.addEventListener('input', function() {
+                        const valorAtual = this.value.toUpperCase();
+                        const datalist = document.createElement('datalist');
+                        datalist.id = 'itensEstoque';
+                        data.forEach(item => {
+                            if (item.toUpperCase().includes(valorAtual)) {
+                                const option = document.createElement('option');
+                                option.value = item;
+                                datalist.appendChild(option);
+                            }
+                        });
+                        const oldDatalist = document.getElementById('itensEstoque');
+                        if (oldDatalist) {
+                            oldDatalist.parentNode.removeChild(oldDatalist);
+                        }
+                        document.body.appendChild(datalist);
+                        inputMaterial.setAttribute('list', 'itensEstoque');
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar itens do estoque:', error));
+        }
+
+        carregarItensEstoque();
+
+        document.getElementById('form-limpar').addEventListener('submit', function(event) {
+            event.preventDefault();
+            fetch('{{ url_for("projeto3.limpar_registros_exibidos") }}', {
+                method: 'POST'
+            })
+            .then(response => response.text())
+            .then(() => {
+                document.getElementById('lista-registros').innerHTML = 
+                    '<div class="alert alert-info mt-3" role="alert">Nenhum registro disponível.</div>';
+            })
+            .catch(error => console.error('Erro ao limpar registros:', error));
+        });
+
+        document.getElementById('form-registrar').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let formData = new FormData(this);
+            fetch('{{ url_for("projeto3.registrar") }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                let registroHTML = '<div class="alert alert-success mt-3" role="alert">';
+                registroHTML += '<strong>Registro realizado com sucesso:</strong><br>';
+                registroHTML += '<span>Pessoa Solicitante: ' + data.nome + '</span><br>';
+                registroHTML += '<span>Material Utilizado: ' + data.material + '</span><br>';
+                registroHTML += '<span>Quantidade: ' + data.quantidade + '</span><br>';
+                registroHTML += '<span>Data e Hora: ' + data.data_hora + '</span><br>';
+                registroHTML += '</div>';
+                
+                document.getElementById('lista-registros').insertAdjacentHTML('beforeend', registroHTML);
+                document.getElementById('form-registrar').reset();
+            })
+            .catch(error => console.error('Erro ao registrar:', error));
+        });
+
+        function converterParaMaiusculas() {
+            let inputMaterial = document.getElementById('material');
+            inputMaterial.value = inputMaterial.value.toUpperCase();
+        }
+
+        document.getElementById('material').addEventListener('input', converterParaMaiusculas);
+    </script>
+</body>
+</html>

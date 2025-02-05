@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Temperatura</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 50px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+        }
+
+        .logo {
+            width: 150px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .form-control {
+            margin-bottom: 1rem;
+        }
+
+        #observations-text {
+            display: none;
+        }
+
+        .btn-report {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-report:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center mb-4">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo da Empresa" class="logo">
+        </div>
+        <h1 class="text-center">Registro de Temperatura</h1>
+        
+        <form id="temperature-form" action="{{ url_for('registrar') }}" method="POST" class="bg-white p-4 rounded shadow-sm">
+            <div class="form-group">
+                <label for="equipment">Equipamento:</label>
+                <select class="form-control" id="equipment" name="equipment" required>
+                    <option value="">Selecione um equipamento</option>
+                    <option value="TD62 - RF20">TD62 - RF20</option>
+                    <option value="TH06 - RF06">TH06 - RF06</option>
+                    <option value="TD39 – RF02">TD39 – RF02</option>
+                    <option value="TD47 – RF02">TD47 – RF02</option>
+                    <option value="TD01 – RF05">TD01 – RF05</option>
+                    <option value="TD37 – RF05">TD37 – RF05</option>
+                    <option value="TH15 – RF17">TH15 – RF17</option>
+                    <option value="TH09 – RF18">TH09 – RF18</option>
+                    <option value="TD25 – RF19">TD25 – RF19</option>
+                    <option value="TD04 – RF09">TD04 – RF09</option>
+                    <option value="TH20 – RF01">TH20 – RF01</option>
+                    <option value="TD41 – BM04">TD41 – BM04</option>
+                    <option value="TD66 – EB04">TD66 – EB04</option>
+                    <option value="TD45 – EB03">TD45 – EB03</option>
+                    <option value="TD61 – RF16">TD61 – RF16</option>
+                    <option value="TD06 – FR02">TD06 – FR02</option>
+                    <option value="TD42 – IN01">TD42 – IN01</option>
+                    <option value="TD64 – IN05">TD64 – IN05</option>
+                    <option value="TD07 – IN04">TD07 – IN04</option>
+                    <option value="TD44 – IN02">TD44 – IN02</option>
+                    <option value="TH21 – IN03">TH21 – IN03</option>
+                    <option value="TD36 – A.A.">TD36 – A.A.</option>
+                    <option value="TH06 – A.A.">TH06 – A.A.</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="date">Data:</label>
+                <input type="date" class="form-control" id="date" name="date" required>
+            </div>
+            <div class="form-group">
+                <label for="time">Hora:</label>
+                <input type="time" class="form-control" id="time" name="time" required>
+            </div>
+            <div class="form-group">
+                <label for="responsible">Responsável:</label>
+                <input type="text" class="form-control" id="responsible" name="responsible" required>
+            </div>
+            <div class="form-group">
+                <label for="current-temp">Temperatura Atual:</label>
+                <input type="text" class="form-control" id="current-temp" name="current-temp" placeholder="Ex: 25, -5" required>
+            </div>
+            <div class="form-group">
+                <label for="max-temp">Temperatura Máxima:</label>
+                <input type="text" class="form-control" id="max-temp" name="max-temp" placeholder="Ex: 30, -10" required>
+            </div>
+            <div class="form-group">
+                <label for="min-temp">Temperatura Mínima:</label>
+                <input type="text" class="form-control" id="min-temp" name="min-temp" placeholder="Ex: 20, -15" required>
+            </div>
+            <div class="form-group">
+                <label for="observations">Observações:</label>
+                <select class="form-control" id="observations" name="observations" required>
+                    <option value="">Selecione uma observação</option>
+                    <option value="Nenhum">Nenhum</option>
+                    <option value="A">A. Descongelamento/ Limpeza</option>
+                    <option value="B">B. Verificação Vedação</option>
+                    <option value="C">C. Verificação Validade de Insumos</option>
+                    <option value="D">D. Solicitação de Manutenção Corretiva</option>
+                    <option value="E">E. Interrupção Energia Elétrica</option>
+                    <option value="F">F. Regulagem do Termostato</option>
+                    <option value="G">G. Porta muito tempo aberta</option>
+                    <option value="H">H. Limpeza após contaminação</option>
+                    <option value="I">I. Outros:</option>
+                </select>
+                <input type="text" class="form-control mt-2" id="observations-text" name="observations-text" placeholder="Descreva outros..." />
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Enviar</button>
+        </form>
+
+        <div class="text-center mt-4">
+            <a href="{{ url_for('relatorio') }}" class="btn btn-report btn-lg">Ver Relatório de Temperatura</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#equipment').select2({
+            placeholder: 'Selecione um equipamento',
+            allowClear: true
+        });
+
+        $('#observations').select2({
+            placeholder: 'Selecione uma observação',
+            allowClear: true
+        }).on('change', function() {
+            if ($(this).val() === 'I') {
+                $('#observations-text').show();
+            } else {
+                $('#observations-text').hide();
+            }
+        });
+
+        // Validação do formulário
+        $('#temperature-form').on('submit', function() {
+            var currentTemp = $('#current-temp').val();
+            var maxTemp = $('#max-temp').val();
+            var minTemp = $('#min-temp').val();
+
+            if (isNaN(currentTemp) || isNaN(maxTemp) || isNaN(minTemp)) {
+                alert('Por favor, insira valores válidos para as temperaturas.');
+                return false;
+            }
+        });
+    });
+    </script>
+</body>
+</html>

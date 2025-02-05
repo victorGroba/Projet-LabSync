@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Controle</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #ecf0f1;
+            display: flex;
+            min-height: 100vh;
+            transition: background-color 0.2s ease;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #34495e;
+            color: white;
+            position: fixed;
+            height: 100%;
+            padding-top: 20px;
+            box-shadow: 4px 0px 15px rgba(0, 0, 0, 0.1);
+            transition: width 0.2s ease, visibility 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            color: #ecf0f1;
+            font-size: 28px;
+            font-weight: 500;
+            margin-bottom: 40px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #ecf0f1;
+            font-size: 18px;
+            margin-left: 15px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            transition: padding-left 0.2s ease, background-color 0.2s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #1abc9c;
+            padding-left: 25px;
+            border-radius: 5px;
+        }
+
+        .sidebar ul li a i {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 40px;
+            width: 100%;
+            transition: margin-left 0.2s ease;
+        }
+
+        .content .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 950px;
+            margin: auto;
+            transition: all 0.2s ease;
+        }
+
+        .logo img {
+            width: 180px;
+            margin-bottom: 30px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            transition: width 0.2s ease;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin: 15px 0;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            font-size: 18px;
+            color: #3498db;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        nav ul li a:hover {
+            color: #2980b9;
+        }
+
+        .logout-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-top: 30px;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .footer-sidebar {
+            text-align: center;
+            padding: 20px 0;
+            font-size: 14px;
+            color: #ecf0f1;
+        }
+
+        .footer-sidebar i {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 0;
+                position: fixed;
+                height: 100%;
+                overflow: hidden;
+                transition: width 0.3s ease;
+            }
+
+            .sidebar.active {
+                width: 250px;
+                overflow: visible;
+            }
+
+            .sidebar ul li {
+                display: none;
+            }
+
+            .sidebar.active ul li {
+                display: flex;
+            }
+
+            .sidebar.active {
+                visibility: visible;
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 20px;
+                transition: margin-left 0.3s ease;
+            }
+
+            .toggle-sidebar {
+                display: block;
+                cursor: pointer;
+                font-size: 30px;
+                color: #2c3e50;
+                margin-left: 10px;
+                margin-top: 10px;
+            }
+
+            .sidebar.active + .content {
+                margin-left: 250px;
+            }
+
+            .content {
+                transition: margin-left 0.3s ease;
+            }
+
+            .content .container {
+                margin-left: 0;
+            }
+        }
+
+        .sidebar ul li a i {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>LabSync</h2>
+        <ul>
+            <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{{ url_for('projeto1.formulario') }}"><i class="fas fa-tachometer-alt"></i> Controle de pH</a></li>
+            <li><a href="{{ url_for('projeto2.index') }}"><i class="fas fa-chart-line"></i> Relatório de Produção</a></li>
+            <li><a href="{{ url_for('projeto3.form') }}"><i class="fas fa-cogs"></i> Registro de Pedidos</a></li>
+            <li><a href="{{ url_for('projeto4.index') }}"><i class="fas fa-clipboard-list"></i> Novo Projeto</a></li>
+        </ul>
+        <div class="footer-sidebar">
+            <i class="fas fa-flask"></i>
+            <p>Desenvolvedor: José Victor</p>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="toggle-sidebar">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="container">
+            <div class="text-center logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo da Empresa">
+            </div>
+            <h1>Bem-vindo ao Painel de Controle</h1>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('projeto1.formulario') }}">Registro Carta Controle pH</a></li>
+                    <li><a href="{{ url_for('projeto2.index') }}">Relatório Detalhado Uso de Meios</a></li>
+                    <li><a href="{{ url_for('projeto3.form') }}">Alerta Mínimo - Meios de Cultura</a></li>
+                    <li><a href="{{ url_for('projeto4.index') }}">Novo Projeto - Funcionalidade</a></li>
+                </ul>
+            </nav>
+            <button class="logout-btn" onclick="window.location.href='{{ url_for('logout') }}'">Sair</button>
+        </div>
+    </div>
+
+    <script>
+        const toggleButton = document.querySelector('.toggle-sidebar');
+        const sidebar = document.querySelector('.sidebar');
+
+        toggleButton.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+    </script>
+
+</body>
+</html>

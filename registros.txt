@@ -1,0 +1,16 @@
+Nome: 3, Material: 3, Quantidade: 1
+Nome: 33, Material: 33, Quantidade: 3
+Nome: 3, Material: 3, Quantidade: 2
+Nome: teste, Material: teste, Quantidade: 1
+Nome: José, Material: TSA, Quantidade: 5
+2025-01-31 16:57:02 | Nome: TESTE, Material: TESTE 31/01, Quantidade: 1
+2025-01-31 16:57:07 | Nome: TESTE, Material: TESTE 31/01, Quantidade: 1
+2025-01-31 16:57:12 | Nome: TESTE, Material: TESTE 31/01, Quantidade: 1
+2025-01-31 16:57:12 | Nome: TESTE, Material: TESTE 31/01, Quantidade: 1
+2025-01-31 16:57:12 | Nome: TESTE, Material: TESTE 31/01, Quantidade: 1
+2025-01-31 16:57:15 | Nome: TESTE, Material: TESTE 31/01, Quantidade: 1
+2025-01-31 16:57:15 | Nome: TESTE, Material: TESTE 31/01, Quantidade: 1
+2025-01-31 17:05:56 | Nome: TESTE, Material: TESTE, Quantidade: 1
+2025-01-31 17:15:13 | Nome: José, Material: Teste, Quantidade: 1
+2025-01-31 17:18:22 | Nome: José , Material: TESTE, Quantidade: 1
+2025-02-03 14:46:35 | Nome: José, Material: TESTE, Quantidade: 1

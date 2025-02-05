@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Temperatura</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            margin-top: 30px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .logo img {
+            width: 100px;
+        }
+        h1 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .filter-container {
+            margin-bottom: 20px;
+        }
+        .card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .card-header {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+        .btn-print {
+            margin-bottom: 15px;
+        }
+        .table {
+            margin-top: 10px;
+        }
+        .table thead th {
+            background-color: #495057;
+            color: #ffffff;
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .table tbody tr:hover {
+            background-color: #e9ecef;
+        }
+        .table td, .table th {
+            padding: 10px;
+            text-align: center;
+        }
+        .month-year {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #888;
+        }
+        .select-report {
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo da Empresa">
+        </div>
+        <h1>Relatórios de Temperatura</h1>
+        
+        <div class="filter-container">
+            <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar relatório..." onkeyup="filterReports()">
+        </div>
+
+        <div id="accordion">
+            {% for report in instrument_reports %}
+            <div class="card report-card">
+                <div class="card-header" id="heading{{ loop.index }}">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{ loop.index }}" style="color: #ffffff; text-decoration: none;">
+                                {{ report.sheet_name }} - {{ report.month_year_full }}
+                            </button>
+                        </h2>
+                        <input type="checkbox" class="select-report" data-report-id="collapse{{ loop.index }}">
+                    </div>
+                </div>
+                <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}" data-parent="#accordion">
+                    <div class="card-body">
+                        <button class="btn btn-secondary btn-print" onclick="openAndPrintReport({{ loop.index }})">Imprimir Relatório</button>
+                        <div class="table-responsive">
+                            <div class="month-year text-center">
+                                Registros de {{ report.month_year }}
+                            </div>
+                            {{ report.html_table | safe }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Botão para imprimir selecionados -->
+        <div class="text-center mt-4">
+            <button class="btn btn-primary" onclick="printSelectedReports()">Imprimir Selecionados</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; {{ current_year }} - GrobaTech. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function filterReports() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const cards = document.querySelectorAll('.report-card');
+
+            cards.forEach(card => {
+                const header = card.querySelector('.card-header button');
+                const text = header.innerText.toLowerCase();
+                card.style.display = text.includes(filter) ? '' : 'none';
+            });
+        }
+
+        function openAndPrintReport(index) {
+            const reportHtml = document.getElementById('collapse' + index).querySelector('.card-body').innerHTML;
+
+            const printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>Relatório de Temperatura</title>');
+            printWindow.document.write('<style>body{font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; color: #333;}</style>');
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(reportHtml);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        function printSelectedReports() {
+            const selectedReports = document.querySelectorAll('.select-report:checked');
+            let combinedHtml = '';
+
+            if (selectedReports.length === 0) {
+                alert('Por favor, selecione pelo menos um relatório para imprimir.');
+                return;
+            }
+
+            selectedReports.forEach(checkbox => {
+                const reportId = checkbox.getAttribute('data-report-id');
+                const reportContent = document.getElementById(reportId).querySelector('.card-body').innerHTML;
+                combinedHtml += `<div style="page-break-after: always;">${reportContent}</div>`;
+            });
+
+            const printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>Relatórios Selecionados</title>');
+            printWindow.document.write('<style>body{font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; color: #333;}</style>');
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(combinedHtml);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
+</body>
+</html>
