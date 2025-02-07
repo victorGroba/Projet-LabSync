@@ -158,21 +158,29 @@
                 padding: 30px;
             }
         }
+        .footer-sidebar {
+            text-align: center;
+            padding: 20px 0;
+            font-size: 14px;
+            color: #ecf0f1;
+        }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <h2>LabSync</h2>
+        <h2><a href="{{ url_for('home') }}" style="color: #ecf0f1; text-decoration: none;">LabSync</a></h2>
         <ul>
             <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="{{ url_for('projeto1.formulario') }}"><i class="fas fa-vial"></i> Registro de pH</a></li>
+            <li><a href="{{ url_for('projeto1.formulario') }}"><i class="fas fa-tachometer-alt"></i> Controle de pH</a></li>
             <li><a href="{{ url_for('projeto2.index') }}"><i class="fas fa-chart-line"></i> Relatório de Produção</a></li>
-            <li><a href="{{ url_for('projeto3.form') }}"><i class="fas fa-box"></i> Registro de Pedidos</a></li>
+            <li><a href="{{ url_for('projeto3.form') }}"><i class="fas fa-cogs"></i> Registro de Pedidos</a></li>
+            <li><a href="{{ url_for('projeto4.index') }}"><i class="fas fa-thermometer-quarter"></i> Temperatura Termômetros</a></li>
+            <li><a href="{{ url_for('projeto4.relatorio') }}"><i class="fas fa-print"></i> Relatório Temperaturas</a></li>
         </ul>
-        <div class="footer-sidebar text-center">
-            <p>Desenvolvido por</p>
-            <p><b>José Victor</b></p>
+        <div class="footer-sidebar">
+            <i class="fas fa-flask"></i>
+            <p>Desenvolvedor: José Victor</p>
         </div>
     </div>
 

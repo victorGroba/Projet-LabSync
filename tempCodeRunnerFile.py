@@ -3,6 +3,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from projeto1.projeto1 import projeto1_blueprint
 from projeto2.projeto2 import projeto2_blueprint
 from projeto3.projeto3 import projeto3_blueprint
+from projeto4.projeto4 import projeto4_blueprint  # Importando o novo projeto
 
 # Configuração do Flask
 app = Flask(__name__)
@@ -64,8 +65,8 @@ def dashboard():
 app.register_blueprint(projeto1_blueprint, url_prefix="/projeto1")
 app.register_blueprint(projeto2_blueprint, url_prefix="/projeto2")
 app.register_blueprint(projeto3_blueprint, url_prefix="/projeto3")
+app.register_blueprint(projeto4_blueprint, url_prefix="/projeto4")  # Novo projeto registrado
 
 if __name__ == "__main__":
     # Garanta que o Flask estará acessível na rede local
     app.run(host="0.0.0.0", port=5000, debug=True)
-
