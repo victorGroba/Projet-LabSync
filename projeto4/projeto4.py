@@ -1,3 +1,5 @@
+import pandas as pd
+
 from flask import Blueprint, render_template, request, redirect, url_for
 import os
 from datetime import datetime
@@ -7,7 +9,8 @@ from openpyxl import load_workbook, Workbook
 projeto4_blueprint = Blueprint('projeto4', __name__, template_folder='templates', static_folder='static')
 
 # Caminho do arquivo Excel
-EXCEL_FILE_PATH = r'C:\Users\victo\OneDrive\Documentos\Controle de estoque\projeto_gestao_estoque\dados.xlsx'
+EXCEL_FILE_PATH = r'C:\Users\victo\OneDrive\Documentos\sistema_unificado\dados.xlsx'
+
 
 # Função para traduzir o nome dos meses para português
 def traduzir_mes(mes_ingles):

@@ -4,139 +4,287 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Temperatura</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" />
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            padding-top: 50px;
+            font-family: 'Roboto', sans-serif;
+            background-color: #ecf0f1;
+            display: flex;
+            min-height: 100vh;
+            transition: background-color 0.2s ease;
+        }
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #34495e;
+            color: white;
+            position: fixed;
+            height: 100%;
+            padding-top: 20px;
+            box-shadow: 4px 0px 15px rgba(0, 0, 0, 0.1);
+            transition: width 0.3s ease, visibility 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             overflow-x: hidden;
         }
-
-        .container {
-            max-width: 800px;
+        .sidebar h2 {
+            text-align: center;
+            color: #ecf0f1;
+            font-size: 28px;
+            font-weight: 500;
+            margin-bottom: 40px;
         }
-
-        .logo {
-            width: 150px;
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
         }
-
+        .sidebar ul li {
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #ecf0f1;
+            font-size: 18px;
+            margin-left: 15px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            transition: padding-left 0.2s ease, background-color 0.2s ease;
+        }
+        .sidebar ul li a:hover {
+            background-color: #1abc9c;
+            padding-left: 25px;
+            border-radius: 5px;
+        }
+        .sidebar ul li a i {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+        .toggle-sidebar {
+            display: none;
+            cursor: pointer;
+            font-size: 30px;
+            color: #2c3e50;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+        .close-sidebar {
+            display: none;
+            cursor: pointer;
+            font-size: 30px;
+            color: #ecf0f1;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 40px;
+            width: 100%;
+            transition: margin-left 0.3s ease;
+        }
+        .content .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 950px;
+            margin: auto;
+        }
+        .logo img {
+            width: 180px;
+            margin-bottom: 30px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            transition: width 0.2s ease;
+        }
+        h1 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
         .form-group label {
             font-weight: bold;
+            color: #34495e;
         }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
+        .btn-primary {
+            background-color: #1abc9c;
+            border: none;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
         }
-
-        button:hover {
-            background-color: #45a049;
+        .btn-primary:hover {
+            background-color: #16a085;
         }
-
-        .form-control {
-            margin-bottom: 1rem;
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 0;
+                position: fixed;
+                height: 100%;
+                overflow: hidden;
+                transition: width 0.3s ease;
+            }
+            .sidebar.active {
+                width: 250px;
+                overflow: visible;
+            }
+            .sidebar ul li {
+                display: none;
+            }
+            .sidebar.active ul li {
+                display: flex;
+            }
+            .content {
+                margin-left: 0;
+                padding: 20px;
+                transition: margin-left 0.3s ease;
+            }
+            .toggle-sidebar {
+                display: block;
+                cursor: pointer;
+                font-size: 30px;
+                color: #2c3e50;
+                margin-left: 10px;
+                margin-top: 10px;
+            }
+            .sidebar.active + .content {
+                margin-left: 250px;
+            }
+            .content .container {
+                padding: 30px;
+            }
+            .close-sidebar {
+                display: block;
+            }
         }
-
-        #observations-text {
-            display: none;
-        }
-
-        .btn-report {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .btn-report:hover {
-            background-color: #0056b3;
+        .footer-sidebar {
+            text-align: center;
+            padding: 20px 0;
+            font-size: 14px;
+            color: #ecf0f1;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="text-center mb-4">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo da Empresa" class="logo">
+    <div class="sidebar">
+        <h2><a href="{{ url_for('home') }}" style="color: #ecf0f1; text-decoration: none;">LabSync</a></h2>
+        <ul>
+            <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{{ url_for('projeto1.formulario') }}"><i class="fas fa-tachometer-alt"></i> Controle de pH</a></li>
+            <li><a href="{{ url_for('projeto2.index') }}"><i class="fas fa-chart-line"></i> Relatório de Produção</a></li>
+            <li><a href="{{ url_for('projeto3.form') }}"><i class="fas fa-cogs"></i> Registro de Pedidos</a></li>
+            <li><a href="{{ url_for('projeto4.index') }}"><i class="fas fa-thermometer-quarter"></i> Temperatura Termômetros</a></li>
+            <li><a href="{{ url_for('projeto4.relatorio') }}"><i class="fas fa-print"></i> Relatório Temperaturas</a></li>
+        </ul>
+        <div class="footer-sidebar">
+            <i class="fas fa-flask"></i>
+            <p>Desenvolvedor: José Victor</p>
         </div>
-        <h1 class="text-center">Registro de Temperatura</h1>
-        
-        <form id="temperature-form" action="{{ url_for('registrar') }}" method="POST" class="bg-white p-4 rounded shadow-sm">
-            <div class="form-group">
-                <label for="equipment">Equipamento:</label>
-                <select class="form-control" id="equipment" name="equipment" required>
-                    <option value="">Selecione um equipamento</option>
-                    <option value="TD62 - RF20">TD62 - RF20</option>
-                    <option value="TH06 - RF06">TH06 - RF06</option>
-                    <option value="TD39 – RF02">TD39 – RF02</option>
-                    <option value="TD47 – RF02">TD47 – RF02</option>
-                    <option value="TD01 – RF05">TD01 – RF05</option>
-                    <option value="TD37 – RF05">TD37 – RF05</option>
-                    <option value="TH15 – RF17">TH15 – RF17</option>
-                    <option value="TH09 – RF18">TH09 – RF18</option>
-                    <option value="TD25 – RF19">TD25 – RF19</option>
-                    <option value="TD04 – RF09">TD04 – RF09</option>
-                    <option value="TH20 – RF01">TH20 – RF01</option>
-                    <option value="TD41 – BM04">TD41 – BM04</option>
-                    <option value="TD66 – EB04">TD66 – EB04</option>
-                    <option value="TD45 – EB03">TD45 – EB03</option>
-                    <option value="TD61 – RF16">TD61 – RF16</option>
-                    <option value="TD06 – FR02">TD06 – FR02</option>
-                    <option value="TD42 – IN01">TD42 – IN01</option>
-                    <option value="TD64 – IN05">TD64 – IN05</option>
-                    <option value="TD07 – IN04">TD07 – IN04</option>
-                    <option value="TD44 – IN02">TD44 – IN02</option>
-                    <option value="TH21 – IN03">TH21 – IN03</option>
-                    <option value="TD36 – A.A.">TD36 – A.A.</option>
-                    <option value="TH06 – A.A.">TH06 – A.A.</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="date">Data:</label>
-                <input type="date" class="form-control" id="date" name="date" required>
-            </div>
-            <div class="form-group">
-                <label for="time">Hora:</label>
-                <input type="time" class="form-control" id="time" name="time" required>
-            </div>
-            <div class="form-group">
-                <label for="responsible">Responsável:</label>
-                <input type="text" class="form-control" id="responsible" name="responsible" required>
-            </div>
-            <div class="form-group">
-                <label for="current-temp">Temperatura Atual:</label>
-                <input type="text" class="form-control" id="current-temp" name="current-temp" placeholder="Ex: 25, -5" required>
-            </div>
-            <div class="form-group">
-                <label for="max-temp">Temperatura Máxima:</label>
-                <input type="text" class="form-control" id="max-temp" name="max-temp" placeholder="Ex: 30, -10" required>
-            </div>
-            <div class="form-group">
-                <label for="min-temp">Temperatura Mínima:</label>
-                <input type="text" class="form-control" id="min-temp" name="min-temp" placeholder="Ex: 20, -15" required>
-            </div>
-            <div class="form-group">
-                <label for="observations">Observações:</label>
-                <select class="form-control" id="observations" name="observations" required>
-                    <option value="">Selecione uma observação</option>
-                    <option value="Nenhum">Nenhum</option>
-                    <option value="A">A. Descongelamento/ Limpeza</option>
-                    <option value="B">B. Verificação Vedação</option>
-                    <option value="C">C. Verificação Validade de Insumos</option>
-                    <option value="D">D. Solicitação de Manutenção Corretiva</option>
-                    <option value="E">E. Interrupção Energia Elétrica</option>
-                    <option value="F">F. Regulagem do Termostato</option>
-                    <option value="G">G. Porta muito tempo aberta</option>
-                    <option value="H">H. Limpeza após contaminação</option>
-                    <option value="I">I. Outros:</option>
-                </select>
-                <input type="text" class="form-control mt-2" id="observations-text" name="observations-text" placeholder="Descreva outros..." />
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Enviar</button>
-        </form>
+    </div>
 
-        <div class="text-center mt-4">
-            <a href="{{ url_for('relatorio') }}" class="btn btn-report btn-lg">Ver Relatório de Temperatura</a>
+    <div class="content">
+        <div class="toggle-sidebar">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="container">
+            <div class="text-center logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo da Empresa">
+            </div>
+            <h1>Registro de Temperatura</h1>
+            
+            <form id="temperature-form" action="{{ url_for('projeto4.registrar') }}" method="POST">
+                <div class="form-group">
+                    <label for="equipment">Equipamento:</label>
+                    <select class="form-control" id="equipment" name="equipment" required>
+                        <option value="">Selecione um equipamento</option>
+                        <option value="TD62 - RF20">TD62 - RF20</option>
+                        <option value="TH06 - RF06">TH06 - RF06</option>
+                        <option value="TD39 – RF02">TD39 – RF02</option>
+                        <option value="TD47 – RF02">TD47 – RF02</option>
+                        <option value="TD01 – RF05">TD01 – RF05</option>
+                        <option value="TD37 – RF05">TD37 – RF05</option>
+                        <option value="TH15 – RF17">TH15 – RF17</option>
+                        <option value="TH09 – RF18">TH09 – RF18</option>
+                        <option value="TD25 – RF19">TD25 – RF19</option>
+                        <option value="TD04 – RF09">TD04 – RF09</option>
+                        <option value="TH20 – RF01">TH20 – RF01</option>
+                        <option value="TD41 – BM04">TD41 – BM04</option>
+                        <option value="TD66 – EB04">TD66 – EB04</option>
+                        <option value="TD45 – EB03">TD45 – EB03</option>
+                        <option value="TD61 – RF16">TD61 – RF16</option>
+                        <option value="TD06 – FR02">TD06 – FR02</option>
+                        <option value="TD42 – IN01">TD42 – IN01</option>
+                        <option value="TD64 – IN05">TD64 – IN05</option>
+                        <option value="TD07 – IN04">TD07 – IN04</option>
+                        <option value="TD44 – IN02">TD44 – IN02</option>
+                        <option value="TH21 – IN03">TH21 – IN03</option>
+                        <option value="TD36 – A.A.">TD36 – A.A.</option>
+                        <option value="TH06 – A.A.">TH06 – A.A.</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date">Data:</label>
+                    <input type="date" class="form-control" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="time">Hora:</label>
+                    <input type="time" class="form-control" id="time" name="time" required>
+                </div>
+                <div class="form-group">
+                    <label for="responsible">Responsável:</label>
+                    <input type="text" class="form-control" id="responsible" name="responsible" required>
+                </div>
+                <div class="form-group">
+                    <label for="current-temp">Temperatura Atual:</label>
+                    <input type="text" class="form-control" id="current-temp" name="current-temp" placeholder="Ex: 25, -5" required>
+                </div>
+                <div class="form-group">
+                    <label for="max-temp">Temperatura Máxima:</label>
+                    <input type="text" class="form-control" id="max-temp" name="max-temp" placeholder="Ex: 30, -10" required>
+                </div>
+                <div class="form-group">
+                    <label for="min-temp">Temperatura Mínima:</label>
+                    <input type="text" class="form-control" id="min-temp" name="min-temp" placeholder="Ex: 20, -15" required>
+                </div>
+                <div class="form-group">
+                    <label for="observations">Observações:</label>
+                    <select class="form-control" id="observations" name="observations" required>
+                        <option value="">Selecione uma observação</option>
+                        <option value="Nenhum">Nenhum</option>
+                        <option value="A">A. Descongelamento/ Limpeza</option>
+                        <option value="B">B. Verificação Vedação</option>
+                        <option value="C">C. Verificação Validade de Insumos</option>
+                        <option value="D">D. Solicitação de Manutenção Corretiva</option>
+                        <option value="E">E. Interrupção Energia Elétrica</option>
+                        <option value="F">F. Regulagem do Termostato</option>
+                        <option value="G">G. Porta muito tempo aberta</option>
+                        <option value="H">H. Limpeza após contaminação</option>
+                        <option value="I">I. Outros:</option>
+                    </select>
+                    <input type="text" class="form-control mt-2" id="observations-text" name="observations-text" placeholder="Descreva outros..." style="display: none;" />
+                </div>
+                <button type="submit" class="btn-primary">Registrar Temperatura</button>
+            </form>
         </div>
     </div>
 
@@ -145,35 +293,42 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script>
-    $(document).ready(function() {
-        $('#equipment').select2({
-            placeholder: 'Selecione um equipamento',
-            allowClear: true
+        const toggleButton = document.querySelector('.toggle-sidebar');
+        const sidebar = document.querySelector('.sidebar');
+
+        toggleButton.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
         });
 
-        $('#observations').select2({
-            placeholder: 'Selecione uma observação',
-            allowClear: true
-        }).on('change', function() {
-            if ($(this).val() === 'I') {
-                $('#observations-text').show();
-            } else {
-                $('#observations-text').hide();
-            }
-        });
+        $(document).ready(function() {
+            $('#equipment').select2({
+                placeholder: 'Selecione um equipamento',
+                allowClear: true
+            });
 
-        // Validação do formulário
-        $('#temperature-form').on('submit', function() {
-            var currentTemp = $('#current-temp').val();
-            var maxTemp = $('#max-temp').val();
-            var minTemp = $('#min-temp').val();
+            $('#observations').select2({
+                placeholder: 'Selecione uma observação',
+                allowClear: true
+            }).on('change', function() {
+                if ($(this).val() === 'I') {
+                    $('#observations-text').show();
+                } else {
+                    $('#observations-text').hide();
+                }
+            });
 
-            if (isNaN(currentTemp) || isNaN(maxTemp) || isNaN(minTemp)) {
-                alert('Por favor, insira valores válidos para as temperaturas.');
-                return false;
-            }
+            // Validação do formulário
+            $('#temperature-form').on('submit', function() {
+                var currentTemp = $('#current-temp').val();
+                var maxTemp = $('#max-temp').val();
+                var minTemp = $('#min-temp').val();
+
+                if (isNaN(currentTemp) || isNaN(maxTemp) || isNaN(minTemp)) {
+                    alert('Por favor, insira valores válidos para as temperaturas.');
+                    return false;
+                }
+            });
         });
-    });
     </script>
 </body>
 </html>

@@ -49,7 +49,7 @@
         }
 
         .sidebar ul li {
-            padding: 12px;
+            padding: 12px 20px;
             display: flex;
             align-items: center;
             transition: background-color 0.2s ease;
@@ -59,7 +59,6 @@
             text-decoration: none;
             color: #ecf0f1;
             font-size: 18px;
-            margin-left: 15px;
             width: 100%;
             display: flex;
             align-items: center;
@@ -68,13 +67,12 @@
 
         .sidebar ul li a:hover {
             background-color: #1abc9c;
-            padding-left: 25px;
             border-radius: 5px;
         }
 
         .sidebar ul li a i {
             font-size: 20px;
-            margin-right: 10px;
+            margin-right: 15px;
         }
 
         .content {
@@ -108,27 +106,47 @@
             font-weight: 600;
             color: #2c3e50;
             margin-bottom: 30px;
+            text-align: center;
         }
 
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        nav ul li {
+        .card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
             margin: 15px 0;
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        nav ul li a {
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #34495e;
+        }
+
+        .card p {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+
+        .card a {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
             text-decoration: none;
-            font-size: 18px;
-            color: #3498db;
-            font-weight: 500;
-            transition: color 0.2s ease;
+            transition: background-color 0.2s;
         }
 
-        nav ul li a:hover {
-            color: #2980b9;
+        .card a:hover {
+            background-color: #2980b9;
         }
 
         .logout-btn {
@@ -139,8 +157,10 @@
             font-size: 18px;
             border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s;
             margin-top: 30px;
+            display: block;
+            width: 100%;
         }
 
         .logout-btn:hover {
@@ -173,18 +193,6 @@
                 overflow: visible;
             }
 
-            .sidebar ul li {
-                display: none;
-            }
-
-            .sidebar.active ul li {
-                display: flex;
-            }
-
-            .sidebar.active {
-                visibility: visible;
-            }
-
             .content {
                 margin-left: 0;
                 padding: 20px;
@@ -203,31 +211,20 @@
             .sidebar.active + .content {
                 margin-left: 250px;
             }
-
-            .content {
-                transition: margin-left 0.3s ease;
-            }
-
-            .content .container {
-                margin-left: 0;
-            }
-        }
-
-        .sidebar ul li a i {
-            font-size: 18px;
         }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <h2>LabSync</h2>
+        <h2><a href="{{ url_for('home') }}" style="color: #ecf0f1; text-decoration: none;">LabSync</a></h2>
         <ul>
             <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="{{ url_for('projeto1.formulario') }}"><i class="fas fa-tachometer-alt"></i> Controle de pH</a></li>
             <li><a href="{{ url_for('projeto2.index') }}"><i class="fas fa-chart-line"></i> Relatório de Produção</a></li>
             <li><a href="{{ url_for('projeto3.form') }}"><i class="fas fa-cogs"></i> Registro de Pedidos</a></li>
-            <li><a href="{{ url_for('projeto4.index') }}"><i class="fas fa-clipboard-list"></i> Novo Projeto</a></li>
+            <li><a href="{{ url_for('projeto4.index') }}"><i class="fas fa-thermometer-quarter"></i> Temperatura Termômetros</a></li>
+            <li><a href="{{ url_for('projeto4.relatorio') }}"><i class="fas fa-print"></i> Relatório Temperaturas</a></li>
         </ul>
         <div class="footer-sidebar">
             <i class="fas fa-flask"></i>
@@ -244,14 +241,37 @@
                 <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo da Empresa">
             </div>
             <h1>Bem-vindo ao Painel de Controle</h1>
-            <nav>
-                <ul>
-                    <li><a href="{{ url_for('projeto1.formulario') }}">Registro Carta Controle pH</a></li>
-                    <li><a href="{{ url_for('projeto2.index') }}">Relatório Detalhado Uso de Meios</a></li>
-                    <li><a href="{{ url_for('projeto3.form') }}">Alerta Mínimo - Meios de Cultura</a></li>
-                    <li><a href="{{ url_for('projeto4.index') }}">Novo Projeto - Funcionalidade</a></li>
-                </ul>
-            </nav>
+
+            <div class="card">
+                <h3>Registro de Controle pH</h3>
+                <p>Realize o registro do controle de pH dos seus processos.</p>
+                <a href="{{ url_for('projeto1.formulario') }}">Acessar</a>
+            </div>
+
+            <div class="card">
+                <h3>Relatório de Produção</h3>
+                <p>Visualize os relatórios detalhados de produção.</p>
+                <a href="{{ url_for('projeto2.index') }}">Acessar</a>
+            </div>
+
+            <div class="card">
+                <h3>Registro de Pedidos</h3>
+                <p>Registre e gerencie seus pedidos de forma eficiente.</p>
+                <a href="{{ url_for('projeto3.form') }}">Acessar</a>
+            </div>
+
+            <div class="card">
+                <h3>Temperatura Termômetros</h3>
+                <p>Monitore a temperatura dos termômetros utilizados.</p>
+                <a href="{{ url_for('projeto4.index') }}">Acessar</a>
+            </div>
+
+            <div class="card">
+                <h3>Relatório de Temperaturas</h3>
+                <p>Consulte os relatórios de temperatura registrados.</p>
+                <a href="{{ url_for('projeto4.relatorio') }}">Acessar</a>
+            </div>
+
             <button class="logout-btn" onclick="window.location.href='{{ url_for('logout') }}'">Sair</button>
         </div>
     </div>
