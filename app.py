@@ -18,6 +18,7 @@ login_manager.login_view = "login"
 # Usuários simulados
 users = {
     "admin": {"password": "password123"}
+    }
 
 class User(UserMixin):
     def __init__(self, id):
